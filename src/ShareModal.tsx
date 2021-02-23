@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
-import { Select, TYPE, Value } from 'baseui/select';
+import { Value } from 'baseui/select';
 import { Modal, ModalBody, ModalHeader, ROLE, SIZE } from 'baseui/modal';
 import { LabelSmall, LabelXSmall } from 'baseui/typography';
 import ShareModalTabs from './ShareModalTabs';
 import SelectUsers from './SelectUsers';
+import { OptionProfile, StatefulMenu } from 'baseui/menu';
 
 interface IProps {
     isModalOpen: boolean;
     setModalOpen: (value: boolean) => void;
 }
+interface IItem {
+    title: string;
+    subtitle: string;
+    body: string;
+    imgUrl: string;
+}
+const ITEMS = Array.from({ length: 4 }, () => ({
+    title: 'David Smith',
+    subtitle: 'Senior Engineering Manager',
+    body: 'Uber Everything',
+    imgUrl: 'https://via.placeholder.com/32x32',
+}));
 function ShareModal({ isModalOpen, setModalOpen }: IProps) {
     const [value, setValue] = useState<Value>();
     const [active, setActive] = useState<string | number>('0');
@@ -16,7 +29,40 @@ function ShareModal({ isModalOpen, setModalOpen }: IProps) {
     const modalBody = () => {
         switch (active) {
             case '0' || 0: {
-                return <SelectUsers value={value} setValue={setValue} />;
+                return (
+                    <>
+                        <SelectUsers value={value} setValue={setValue} />
+                        <StatefulMenu
+                            items={ITEMS}
+                            overrides={{
+                                List: {
+                                    style: {
+                                        width: '350px',
+                                    },
+                                },
+                                Option: {
+                                    component: OptionProfile,
+                                    props: {
+                                        getProfileItemLabels: ({
+                                            title,
+                                            subtitle,
+                                            body,
+                                        }: IItem) => ({
+                                            title,
+                                            subtitle,
+                                            body,
+                                        }),
+                                        getProfileItemImg: (item: IItem) => item.imgUrl,
+                                        getProfileItemImgText: (item: IItem) => item.title,
+                                    },
+                                    defaultProps : {
+                                        
+                                    }
+                                },
+                            }}
+                        />
+                    </>
+                );
             }
             case '1' || 1: {
                 return <LabelSmall>{'something else'}</LabelSmall>;

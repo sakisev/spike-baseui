@@ -3,7 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import { Provider as StyletronProvider } from 'styletron-react';
-import { BaseProvider, LightTheme, styled } from 'baseui';
+import {
+    BaseProvider,
+    createTheme,
+    darkThemePrimitives,
+    LightTheme,
+    lightThemePrimitives,
+    styled,
+    ThemeProvider,
+} from 'baseui';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import App from './App';
 
@@ -16,11 +24,26 @@ const Centered = styled('div', {
 });
 ReactDOM.render(
     <StyletronProvider value={engine}>
-        <BaseProvider theme={LightTheme}>
+        <ThemeProvider
+            theme={createTheme(
+                { ...lightThemePrimitives, primaryFontFamily: 'Inter' },
+                {
+                    colors: {
+                        buttonPrimaryFill: '#0071DB',
+                        buttonPrimaryText: 'rgba(255,255,255,0.88)',
+                    },
+                    borders: {
+                        buttonBorderRadius: '6px',
+                    },
+                },
+            )}
+        >
+            {/*<BaseProvider theme={LightTheme}>*/}
             <Centered>
                 <App />
             </Centered>
-        </BaseProvider>
+            {/*</BaseProvider>*/}
+        </ThemeProvider>
     </StyletronProvider>,
     document.getElementById('root'),
 );
