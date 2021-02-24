@@ -56,7 +56,7 @@ function ShareModal({ isModalOpen, setModalOpen }: IProps) {
                                         getProfileItemImgText: (item: IItem) => item.title,
                                     },
                                     defaultProps : {
-                                        
+
                                     }
                                 },
                             }}
