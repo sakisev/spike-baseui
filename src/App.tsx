@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'baseui/button';
 import ShareModal from './ShareModal';
-import { DarkTheme, LightTheme, styled, ThemeProvider } from 'baseui';
+import { styled, ThemeProvider } from 'baseui';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { Client as Styletron } from 'styletron-engine-atomic';
-import { Checkbox, StatefulCheckbox } from 'baseui/checkbox';
+import { DarkTheme, LightTheme } from './themeSchema';
 
 export default function App() {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,8 +27,16 @@ export default function App() {
     };
 
     useEffect(() => {
+        localStorage.setItem('theme', theme);
+        console.log(theme);
+        
+    }, [theme]);
+
+    useEffect(() => {
         const theme: string | null = localStorage.getItem('theme');
-        if (theme) {
+        console.log(theme);
+
+        if (theme != null) {
             setTheme(theme as THEME);
         }
     }, []);
@@ -36,7 +44,7 @@ export default function App() {
     return (
         <StyletronProvider value={engine}>
             <ThemeProvider theme={theme === THEME.light ? LightTheme : DarkTheme}>
-                <Button onClick={handleClickEvent}>Toggle light/dark theme!</Button>
+                <Button onClick={handleClickEvent}>{theme=== THEME.light? 'Light Theme' : 'Dark Theme'}</Button>
                 <Centered>
                     <ShareModal isModalOpen={isOpen} setModalOpen={setIsOpen} />
                     <Button onClick={() => setIsOpen(true)}>{'Open Share Modal'}</Button>
